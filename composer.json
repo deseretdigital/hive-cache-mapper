@@ -1,0 +1,11 @@
+{
+    "name": "deseretdigital/hive-cache-mapper",
+    "description": "A cache mapping tool",
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {
+        "php": ">=5.4",
+        "predis/predis": "~1.0.0"
+    }
+}
