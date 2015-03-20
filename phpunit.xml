@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "false"
+    syntaxCheck                 = "false"
+    reportUselessTests          = "true"
+    bootstrap                   = "vendor/autoload.php"
+>
+
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <!--
+    <php>
+        <server name="KERNEL_DIR" value="/path/to/your/app/" />
+    </php>
+    -->
+    <php>
+        <env name="_env" value="phpunit" />
+    </php>
+
+    <filter>
+        <whitelist>
+            <directory>../src</directory>
+        </whitelist>
+    </filter>
+
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
+
+</phpunit>
