@@ -7,4 +7,4 @@ use Predis\Client;
 class CacheMapper
 {
 
-} 
+}
