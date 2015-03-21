@@ -2,7 +2,8 @@
 
 namespace DDM\CacheMapper\Client;
 
-interface ClientInterface {
+interface ClientInterface
+{
     public function __construct(array $config = []);
     public function set($key, $data, $expiry);
     public function setAdd($key, array $data);

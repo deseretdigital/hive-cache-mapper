@@ -72,9 +72,8 @@ class RedisClient implements ClientInterface
     public function getClient()
     {
         if (is_null($this->client)) {
-           return new Client($this->getClientConfig());
+            return new Client($this->getClientConfig());
         }
         return $this->client;
     }
-
 }

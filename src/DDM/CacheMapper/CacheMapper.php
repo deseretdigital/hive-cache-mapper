@@ -30,8 +30,7 @@ class CacheMapper
         $client = $this->getClient();
         $cacheObject = $this->getProcessor()->process($data);
         $client->set("{$this->keyPrefix}{$key}", json_encode($cacheObject->getCacheData()), $this->expireTime);
-        foreach($cacheObject->getCacheMap() as $type=>$mapEntries)
-        {
+        foreach ($cacheObject->getCacheMap() as $type => $mapEntries) {
             $client->setAdd("{$this->keyPrefix}{$key}.map:{$type}", $mapEntries);
         }
     }
@@ -45,7 +44,7 @@ class CacheMapper
     }
     public function getProcessor()
     {
-        if(is_null($this->processor)) {
+        if (is_null($this->processor)) {
             $this->setProcessor(new Processor\ApiProcessor());
         }
         return $this->processor;
@@ -64,7 +63,7 @@ class CacheMapper
      */
     public function getClient()
     {
-        if(is_null($this->client)) {
+        if (is_null($this->client)) {
             $this->setClient(new Client\RedisClient($this->getClientConfig()));
         }
         return $this->client;
@@ -85,6 +84,4 @@ class CacheMapper
     {
         return $this->clientConfig;
     }
-
-
 }

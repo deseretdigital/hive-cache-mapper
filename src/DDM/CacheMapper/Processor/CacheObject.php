@@ -43,13 +43,12 @@ class CacheObject
     protected function cleanCachemapData(array $cacheMap = [])
     {
         $cleaned = [];
-        foreach($cacheMap as $type=>$cacheObjects) {
-            $objects = array_filter(array_map(function($cacheId) {
+        foreach ($cacheMap as $type => $cacheObjects) {
+            $objects = array_filter(array_map(function ($cacheId) {
                 return is_string($cacheId) ? $cacheId : null;
-            },$cacheObjects));
+            }, $cacheObjects));
             $cleaned[$type] = $objects;
         }
         return $cleaned;
     }
-
 }

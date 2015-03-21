@@ -18,4 +18,4 @@ class ApiProcessor implements ProcessorInterface
         $cacheObject->setCacheData($data);
         return $cacheObject;
     }
-} 
+}
