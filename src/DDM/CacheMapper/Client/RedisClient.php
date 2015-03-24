@@ -14,7 +14,7 @@ class RedisClient implements ClientInterface
     }
     public function set($key, $data, $expiry)
     {
-        if(!is_string($data)) {
+        if (!is_string($data)) {
             throw new \Exception('Data sent to set must be a string');
         }
         $this->getClient()->set($key, $data, "ex", $expiry);
@@ -25,7 +25,11 @@ class RedisClient implements ClientInterface
     }
     public function setMembers($key)
     {
-        $this->getClient()->smembers($key);
+        return $this->getClient()->smembers($key);
+    }
+    public function keys($pattern)
+    {
+        return $this->getClient()->keys($pattern);
     }
     public function get($key)
     {

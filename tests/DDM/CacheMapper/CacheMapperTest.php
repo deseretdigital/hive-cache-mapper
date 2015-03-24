@@ -26,7 +26,9 @@ class CacheMapperTest extends PHPUnit_Framework_TestCase
 
         $client = $this->getClientMock();
         $client->shouldReceive('set')->once()->with('cms.page:01', json_encode($this->sampleData), 60);
+        $client->shouldReceive('delete')->once()->with('cms.page:01.map:contentprofiles');
         $client->shouldReceive('setAdd')->once()->with('cms.page:01.map:contentprofiles', $this->sampleData['_cachemap']['contentprofiles']);
+        $client->shouldReceive('delete')->once()->with('cms.page:01.map:pages');
         $client->shouldReceive('setAdd')->once()->with('cms.page:01.map:pages', $this->sampleData['_cachemap']['pages']);
         $cacheMapper->setClient($client);
 
@@ -42,7 +44,9 @@ class CacheMapperTest extends PHPUnit_Framework_TestCase
 
         $client = \Mockery::mock('Predis\Client');
         $client->shouldReceive('set')->once()->with('cms.page:01', json_encode($this->sampleData), 'ex', 60);
+        $client->shouldReceive('del')->once()->with('cms.page:01.map:contentprofiles');
         $client->shouldReceive('sadd')->once()->with('cms.page:01.map:contentprofiles', $this->sampleData['_cachemap']['contentprofiles']);
+        $client->shouldReceive('del')->once()->with('cms.page:01.map:pages');
         $client->shouldReceive('sadd')->once()->with('cms.page:01.map:pages', $this->sampleData['_cachemap']['pages']);
 
         $redisClient = new RedisClient();
@@ -58,6 +62,21 @@ class CacheMapperTest extends PHPUnit_Framework_TestCase
         $client = $cacheMapper->getClient();
         $this->assertInstanceOf('DDM\CacheMapper\Client\ClientInterface', $client);
         $this->assertInstanceOf('DDM\CacheMapper\Client\RedisClient', $client);
+    }
+    public function testGetMapEntries()
+    {
+        $cacheMapper = new CacheMapper();
+        $client = $this->getClientMock();
+        $cacheMapper->setClient($client);
+
+        $client->shouldReceive('keys')->once()->with('cms.page:01.map:*')->andReturn([
+            'cms.page:01.map:contentprofiles',
+            'cms.page:01.map:pages'
+        ]);
+        $client->shouldReceive('setMembers')->once()->with('cms.page:01.map:contentprofiles')->andReturn(['c_1','c_2']);
+        $client->shouldReceive('setMembers')->once()->with('cms.page:01.map:pages')->andReturn(['p_1','p_2']);
+        $cacheMapper->keyPrefix = 'cms.';
+        $cacheMapper->getMapEntries('page:01');
     }
 
 } 

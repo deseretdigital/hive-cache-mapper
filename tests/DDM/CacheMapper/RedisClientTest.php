@@ -39,6 +39,13 @@ class RedisClientTest extends PHPUnit_Framework_TestCase
         $redisMock->shouldReceive('get')->once()->with('KEY');
         $client->get('KEY');
     }
+    public function testKeys()
+    {
+        $client = new RedisClient([]);
+        $redisMock = $this->getRedisMock($client);
+        $redisMock->shouldReceive('keys')->once()->with('KEY');
+        $client->keys('KEY');
+    }
     public function testDelete()
     {
         $client = new RedisClient([]);

@@ -18,7 +18,7 @@ class CacheMapper
 
     protected $clientConfig;
     public $expireTime = 60;
-    public $keyPrefix = '';
+    public $keyPrefix = 'cache.';
 
     public function __construct(array $clientConfig = [])
     {
@@ -29,10 +29,25 @@ class CacheMapper
     {
         $client = $this->getClient();
         $cacheObject = $this->getProcessor()->process($data);
+
         $client->set("{$this->keyPrefix}{$key}", json_encode($cacheObject->getCacheData()), $this->expireTime);
+
         foreach ($cacheObject->getCacheMap() as $type => $mapEntries) {
-            $client->setAdd("{$this->keyPrefix}{$key}.map:{$type}", $mapEntries);
+            $mapKey = "{$this->keyPrefix}{$key}.map:{$type}";
+            $client->delete($mapKey);
+            $client->setAdd($mapKey, $mapEntries);
         }
+    }
+
+    public function getMapEntries($key)
+    {
+        $client = $this->getClient();
+        $keys = $client->keys("{$this->keyPrefix}{$key}.map:*");
+        $mapEntries = [];
+        foreach ($keys as $key) {
+            $mapEntries[$key] = $client->setMembers($key);
+        }
+        return $mapEntries;
     }
 
     /**
