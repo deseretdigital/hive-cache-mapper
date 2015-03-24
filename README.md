@@ -31,8 +31,8 @@ Result
 
 ```json
 {
-    "contentprofiles": ['id_a', 'id_b'],
-    "pages": ['id_c', 'id_d']
+    "contentprofiles": ["id_a", "id_b"],
+    "pages": ["id_c", "id_d"]
 }
 ```
 
